@@ -20,18 +20,18 @@ fi
 echo "Running extraction: $1 to $2"
 $PYTHON_EXEC extract_statsports_data.py "$1" "$2"
 
-# Check if extraction was successful and if Mason Mount update script exists
-if [ $? -eq 0 ] && [ -f "update_mason_mount.py" ]; then
+# Check if extraction was successful and if player update script exists
+if [ $? -eq 0 ] && [ -f "update_player.py" ]; then
     echo ""
-    echo "🔄 Extraction complete - checking for Mason Mount updates..."
+    echo "🔄 Extraction complete - checking for player updates..."
     
-    # Check if there's an existing Mason Mount CSV to update
+    # Check if there's an existing player CSV to update
     if [ -f "combined_mason_mount.csv" ]; then
-        echo "📊 Updating Mason Mount dataset..."
-        $PYTHON_EXEC update_mason_mount.py
+        echo "📊 Updating player dataset..."
+        $PYTHON_EXEC update_player.py
         
         if [ $? -eq 0 ]; then
-            echo "✅ Mason Mount dataset updated successfully!"
+            echo "✅ Player dataset updated successfully!"
             
             # Try automatic OneDrive upload if Azure is configured
             echo ""
@@ -47,14 +47,14 @@ if [ $? -eq 0 ] && [ -f "update_mason_mount.py" ]; then
                 echo "   OneDrive: https://netorgft16957735-my.sharepoint.com/:f:/g/personal/chris_e-d_ltd/EiiO0I9sqxZEs9VZcv2Q06cBuqpmu94HxX7_3aHSUuzxqw?e=NA2AnT"
             fi
         else
-            echo "⚠️  Mason Mount update failed, but extraction data is still available."
+            echo "⚠️  Player update failed, but extraction data is still available."
         fi
     else
-        echo "📋 No existing Mason Mount dataset found (combined_mason_mount.csv)."
+        echo "📋 No existing player dataset found (combined_mason_mount.csv)."
         echo "💡 To create one, run: $PYTHON_EXEC combine_runs.py"
     fi
 else
-    if [ ! -f "update_mason_mount.py" ]; then
-        echo "⚠️  Mason Mount update script not found - skipping auto-update"
+    if [ ! -f "update_player.py" ]; then
+        echo "⚠️  Player update script not found - skipping auto-update"
     fi
 fi

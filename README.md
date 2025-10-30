@@ -36,7 +36,7 @@ Automated pipeline for extracting STATSports data, filtering Mason Mount records
 
 - `statsports_client.py` - STATSports API client
 
-- `update_mason_mount.py` - Updates Mason Mount dataset  ## Features
+- `update_player.py` - Updates player dataset  ## Features
 
 - `upload_to_onedrive.py` - Uploads to OneDrive via Microsoft Graph API
 

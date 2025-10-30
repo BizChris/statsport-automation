@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Update script to add new Mason Mount records to existing combined CSV.
+Update script to add new player records to existing combined CSV.
 Handles deduplication and maintains chronological order.
 """
 import pandas as pd
@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 
 def find_latest_combined_csv():
-    """Find the combined Mason Mount CSV."""
+    """Find the combined player CSV."""
     # First try the standard filename
     standard_file = "combined_mason_mount.csv"
     if os.path.exists(standard_file):
@@ -22,7 +22,7 @@ def find_latest_combined_csv():
     files = glob.glob(pattern)
     
     if not files:
-        print("No existing combined Mason Mount CSV found!")
+        print("No existing combined player CSV found!")
         return None
     
     # Sort by modification time, newest first
@@ -51,7 +51,7 @@ def find_new_run_csv():
     return newest_file
 
 def load_existing_data(csv_file):
-    """Load existing Mason Mount data."""
+    """Load existing player data."""
     print(f"Loading existing data from {csv_file}...")
     df = pd.read_csv(csv_file)
     print(f"  Existing records: {len(df)}")
@@ -64,12 +64,12 @@ def load_existing_data(csv_file):
     return df
 
 def extract_mason_mount_from_new_run(csv_file):
-    """Extract Mason Mount records from new run."""
-    print(f"\nExtracting Mason Mount data from new run...")
+    """Extract player records from new run."""
+    print(f"\nExtracting player data from new run...")
     df = pd.read_csv(csv_file)
     print(f"  Total records in new run: {len(df)}")
     
-    # Filter for Mason Mount (case-insensitive, partial match)
+    # Filter for target player (case-insensitive, partial match)
     player_columns = ['player_display_name', 'player_first_name', 'player_last_name']
     available_cols = [col for col in player_columns if col in df.columns]
     
@@ -81,7 +81,7 @@ def extract_mason_mount_from_new_run(csv_file):
             mask = mask | col_mask
     
     mason_df = df[mask]
-    print(f"  Mason Mount records found: {len(mason_df)}")
+    print(f"  Player records found: {len(mason_df)}")
     
     if len(mason_df) > 0 and 'session_date' in mason_df.columns:
         unique_sessions = mason_df['session_date'].nunique()
@@ -167,7 +167,7 @@ def save_updated_csv(df, original_file):
 
 def main():
     """Main update function."""
-    print("STATSports Mason Mount Data Updater")
+    print("STATSports Player Data Updater")
     print("=" * 60)
     
     # Find existing combined CSV
@@ -186,11 +186,11 @@ def main():
     # Load existing data
     existing_df = load_existing_data(existing_csv)
     
-    # Extract new Mason Mount data
+    # Extract new player data
     new_mason_df = extract_mason_mount_from_new_run(new_run_csv)
     
     if len(new_mason_df) == 0:
-        print("\nNo new Mason Mount records found in latest run.")
+        print("\nNo new player records found in latest run.")
         return
     
     # Combine and deduplicate
@@ -199,7 +199,7 @@ def main():
     # Save updated file (overwrites original)
     updated_file = save_updated_csv(final_df, existing_csv)
     
-    print(f"\n✅ Mason Mount dataset updated successfully!")
+    print(f"\n✅ Player dataset updated successfully!")
     print(f"📝 File updated: {updated_file}")
 
 if __name__ == "__main__":
