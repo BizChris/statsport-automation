@@ -7,6 +7,10 @@ import pandas as pd
 import os
 import sys
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 def find_latest_combined_csv():
     """Find the combined player CSV."""
@@ -63,9 +67,13 @@ def load_existing_data(csv_file):
     
     return df
 
-def extract_mason_mount_from_new_run(csv_file):
+def extract_player_from_new_run(csv_file):
     """Extract player records from new run."""
-    print(f"\nExtracting player data from new run...")
+    # Get player name from environment variable
+    player_name = os.getenv('PLAYER_NAME', 'mason mount').lower().strip()
+    print(f"\nExtracting data for player: {player_name}")
+    print(f"Processing file: {csv_file}")
+    
     df = pd.read_csv(csv_file)
     print(f"  Total records in new run: {len(df)}")
     
@@ -77,7 +85,7 @@ def extract_mason_mount_from_new_run(csv_file):
     
     for col in available_cols:
         if col in df.columns:
-            col_mask = df[col].str.contains('mason mount', case=False, na=False)
+            col_mask = df[col].str.contains(player_name, case=False, na=False)
             mask = mask | col_mask
     
     mason_df = df[mask]
@@ -187,7 +195,7 @@ def main():
     existing_df = load_existing_data(existing_csv)
     
     # Extract new player data
-    new_mason_df = extract_mason_mount_from_new_run(new_run_csv)
+    new_mason_df = extract_player_from_new_run(new_run_csv)
     
     if len(new_mason_df) == 0:
         print("\nNo new player records found in latest run.")

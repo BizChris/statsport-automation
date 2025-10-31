@@ -94,11 +94,19 @@ AZURE_CLIENT_ID=your-client-id
 
 AZURE_CLIENT_SECRET=your-client-secret### 3. Run Extraction
 
-ONEDRIVE_USER_EMAIL=your-email@domain.com```bash
+ONEDRIVE_USER_EMAIL=your-email@domain.com
+ONEDRIVE_FOLDER_NAME=Your Data Folder
+PLAYER_NAME=player full name
+```
 
-ONEDRIVE_FOLDER_NAME=Mason Mount Data# Extract data for a date range (YYYY-MM-DD format)
+### 3. Run Extraction
 
-```./run.sh 2025-01-01 2025-01-31
+```bash
+# Extract data for a date range (YYYY-MM-DD format)
+./run.sh 2025-01-01 2025-01-31
+
+# Or specify a different player name (overrides .env setting)
+./run.sh 2025-01-01 2025-01-31 "different player name"
 
 ```
 

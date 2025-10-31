@@ -8,6 +8,10 @@ import os
 import glob
 from datetime import datetime
 import sys
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 def find_csv_files(runs_dir="runs"):
     """Find all CSV files in run directories."""
@@ -119,11 +123,12 @@ def filter_by_player(df, player_name):
 
 def main():
     """Main processing function."""
-    player_name = "mason mount"  # Default player
+    # Get player name from environment variable, command line, or default
+    player_name = os.getenv('PLAYER_NAME', 'mason mount').lower().strip()
     
-    # Allow player name to be passed as argument
+    # Allow player name to be passed as argument (overrides env var)
     if len(sys.argv) > 1:
-        player_name = " ".join(sys.argv[1:])
+        player_name = " ".join(sys.argv[1:]).lower().strip()
     
     print(f"STATSports Run Combiner - Filtering for: '{player_name}'")
     print("=" * 60)

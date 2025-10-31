@@ -11,13 +11,22 @@ fi
 # Set Python executable from virtual environment
 PYTHON_EXEC="/Users/christopherdickson/Documents/GitHub/statsports_starter/.venv/bin/python"
 
-if [ $# -ne 2 ]; then
-    echo "Usage: ./run.sh START_DATE END_DATE"
+if [ $# -lt 2 ] || [ $# -gt 3 ]; then
+    echo "Usage: ./run.sh START_DATE END_DATE [PLAYER_NAME]"
     echo "Example: ./run.sh 2024-01-01 2024-01-31"
+    echo "Example: ./run.sh 2024-01-01 2024-01-31 'mason mount'"
+    echo "Note: If PLAYER_NAME is not provided, uses PLAYER_NAME from .env file"
     exit 1
 fi
 
-echo "Running extraction: $1 to $2"
+# Set player name if provided as third parameter
+if [ $# -eq 3 ]; then
+    export PLAYER_NAME="$3"
+    echo "Running extraction: $1 to $2 (Player: $3)"
+else
+    echo "Running extraction: $1 to $2"
+fi
+
 $PYTHON_EXEC extract_statsports_data.py "$1" "$2"
 
 # Check if extraction was successful and if player update script exists
